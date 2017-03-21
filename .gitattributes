@@ -4,6 +4,7 @@
 .gitattributes pony
 .gitignore pony
 *.md pony
+*.txt pony
 
 *.c pony
 *.cc pony
