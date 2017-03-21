@@ -1,0 +1,23 @@
+[attr]pony text eol=lf whitespace=tab-in-indent,trailing-space,tabwidth=2
+[attr]win  text eol=crlf whitespace=tab-in-indent,trailing-space,tabwidth=2
+
+.gitattributes pony
+.gitignore pony
+*.md pony
+
+*.c pony
+*.cc pony
+*.h pony
+*.pony pony
+*.yml pony
+*.sh pony
+*.bash pony
+*.rb pony
+
+*.bat win
+
+pony.g export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+
+CHANGELOG.md merge=union
