@@ -39,8 +39,8 @@ script:
   - for formula in $formulas;
     do
       tapped_formula="${TRAVIS_REPO_SLUG}/${formula}";
-      brew unlink "$tapped_formula" &&
-      brew remove --force "$tapped_formula" &&
+      brew unlink "$tapped_formula" || echo "Could not unlink.";
+      brew remove --force "$tapped_formula" || echo "Could not remove.";
       brew install --verbose --build-bottle "$tapped_formula" &&
       brew bottle --verbose "$tapped_formula";
     done;
