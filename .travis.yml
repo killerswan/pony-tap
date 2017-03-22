@@ -1,8 +1,9 @@
 language: ruby
 os: osx
-env: OSX=10.12
 osx_image: xcode8.1
 rvm: system
+env:
+  - OSX=10.12
 
 notifications:
   email:
@@ -11,41 +12,20 @@ notifications:
 
 before_install:
   # default stuff from homebrew
-  #- export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
-  #- if [ -f ".git/shallow" ]; then
-  #    travis_retry git fetch --unshallow;
-  #  fi
-  #- HOMEBREW_REPOSITORY="$(brew --repo)"
-  #- sudo chown -R "$USER" "$HOMEBREW_REPOSITORY"
-  #- git -C "$HOMEBREW_REPOSITORY" reset --hard origin/master
-  #- brew update || brew update
-  #- HOMEBREW_TAP_DIR="$(brew --repo "$TRAVIS_REPO_SLUG")"
-  #- rm -rf "$HOMEBREW_TAP_DIR"
-  #- ln -s "$PWD" "$HOMEBREW_TAP_DIR"
-  #- export HOMEBREW_DEVELOPER="1"
-  #- ulimit -n 1024
+  - export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
+  - if [ -f ".git/shallow" ]; then
+      travis_retry git fetch --unshallow;
+    fi
+  - HOMEBREW_REPOSITORY="$(brew --repo)"
+  - sudo chown -R "$USER" "$HOMEBREW_REPOSITORY"
+  - git -C "$HOMEBREW_REPOSITORY" reset --hard origin/master
+  - brew update || brew update
+  - HOMEBREW_TAP_DIR="$(brew --repo "$TRAVIS_REPO_SLUG")"
+  - rm -rf "$HOMEBREW_TAP_DIR"
+  - ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+  - export HOMEBREW_DEVELOPER="1"
+  - ulimit -n 1024
 
 script:
   # default call to the test-bot
-  #- brew test-bot
-
-  # now actually build some bottles
-  #
-  # for reference, see:
-  # * https://github.com/staticfloat/julia-buildbot/blob/master/commands/build_bottle.sh
-  # * https://github.com/Malvineous/travis-homebrew-bottle/blob/master/.travis.yml
-  - brew tap "${TRAVIS_REPO_SLUG}"
-  - formulas="libressl pcre2";
-  - for formula in $formulas;
-    do
-      tapped_formula="${TRAVIS_REPO_SLUG}/${formula}";
-      brew unlink "$tapped_formula" || echo "Could not unlink.";
-      brew remove --force "$tapped_formula" || echo "Could not remove.";
-      brew install --verbose --build-bottle "$tapped_formula" &&
-      brew bottle --verbose "$tapped_formula";
-    done;
-  - ls -alh
-
-before_deploy:
-  - export RELEASE_FILES=$(find *.bottle.tar.gz)
-  - echo "We can now deploy:\n$RELEASE_FILES"
+  - brew test-bot
