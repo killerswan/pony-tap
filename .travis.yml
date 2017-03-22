@@ -78,6 +78,16 @@ script:
         brew bottle --verbose "$tapped_formula";
       fi;
     done;
+
+  #TODO: WRITE A BINTRAY DESCRIPTOR FILE FOR THE BOTTLES TO UPLOAD
+  # * override: default, no overwrite
+  # * date
+  # * version
+  # * attributes incl. SHA
+  # * pattern
+
+  # I'm fine sticking everything in one bintray repository, as Julia does.
+
   - ls -alh
 
 after_success:
