@@ -29,3 +29,4 @@ Feel free to ask questions!
 * RubyDoc for [the Formula class](http://www.rubydoc.info/github/Homebrew/brew/master/Formula)
 * [Formula Cookbook](http://docs.brew.sh/Formula-Cookbook.html)
 * a Travis hint [about timeouts](https://docs.travis-ci.com/user/common-build-problems/#My-builds-are-timing-out)
+* [jq](https://stedolan.github.io/jq/)

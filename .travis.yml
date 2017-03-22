@@ -7,13 +7,6 @@ env:
     # default?
     - OSX=10.12"
 
-    # Not used yet:
-    - LIBRESSL_VERSION=2.4.5
-    - LIBRESSL_REV=0
-    - PCRE2_VERSION=10.22
-    - PCRE2_REV=0
-    - TAP="killerswan/pony"
-
 
 notifications:
   email:
@@ -59,19 +52,31 @@ script:
   # * https://github.com/staticfloat/julia-buildbot/blob/master/commands/build_bottle.sh
   # * https://github.com/Malvineous/travis-homebrew-bottle/blob/master/.travis.yml
   - brew update
-  - brew tap "${TAP}"
+  - brew install --verbose jq
+  - brew tap "${TRAVIS_REPO_SLUG}"
   - formulas="libressl pcre2";
   - for formula in $formulas;
     do
-      tapped_formula="${TAP}/${formula}";
+      tapped_formula="${TRAVIS_REPO_SLUG}/${formula}";
+      RB="./Formula/${formula}.rb"
 
-      echo "FIXME: derive bottle name and check if it already exists, doesn't need building...";
+      echo "Printing JSON of bottle info..."
+      brew info --json=v1 "$RB"
+      echo "OK"
 
-      echo "Building a bottle from source for $tapped_formula...";
-      brew unlink "$tapped_formula" || echo "Could not unlink.";
-      brew remove --force "$tapped_formula" || echo "Could not remove.";
-      brew install --verbose --build-bottle "$tapped_formula" &&
-      brew bottle --verbose "$tapped_formula";
+      EXPECTED_NAME=$(brew info --json=v1 "$RB" | jq '.[0].name');
+      EXPECTED_VERSION=$(brew info --json=v1 "$RB" | jq '.[0].versions.stable');
+      EXPECTED_REVISION=$(brew info --json=v1 "$RB" | jq '.[0].revision');
+      BOTTLE=$(brew info --json=v1 "$RB" | jq '.[0].bottle');
+
+      if [[ "$BOTTLE" == "{}" ]];
+      then
+        echo "Since no bottles for ${formula} are available, building new from source..."
+        brew unlink "$tapped_formula" || echo "Could not unlink.";
+        brew remove --force "$tapped_formula" || echo "Could not remove.";
+        brew install --verbose --build-bottle "$tapped_formula" &&
+        brew bottle --verbose "$tapped_formula";
+      fi;
     done;
   - ls -alh
 
