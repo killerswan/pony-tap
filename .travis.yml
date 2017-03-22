@@ -64,6 +64,10 @@ script:
   - for formula in $formulas;
     do
       tapped_formula="${TAP}/${formula}";
+
+      echo "FIXME: derive bottle name and check if it already exists, doesn't need building...";
+
+      echo "Building a bottle from source for $tapped_formula...";
       brew unlink "$tapped_formula" || echo "Could not unlink.";
       brew remove --force "$tapped_formula" || echo "Could not remove.";
       brew install --verbose --build-bottle "$tapped_formula" &&
@@ -72,5 +76,5 @@ script:
   - ls -alh
 
 after_success:
-  - export RELEASE_FILES=$(find *.bottle.tar.gz)
+  - export RELEASE_FILES=$(ls *.bottle.tar.gz)
   - echo "We can now deploy:\n$RELEASE_FILES"

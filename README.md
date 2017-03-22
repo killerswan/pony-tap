@@ -23,8 +23,9 @@ Updates to our formulas should also be built into new binary bottles.
 
 Feel free to ask questions!
 
+* the Pony ticket discussing this Tap: [ponyc#1732](https://github.com/ponylang/ponyc/issues/1732)
 * [Bottles](http://docs.brew.sh/Bottles.html)
 * [Taps (third-party repositories)](http://docs.brew.sh/brew-tap.html) (like this one)
 * RubyDoc for [the Formula class](http://www.rubydoc.info/github/Homebrew/brew/master/Formula)
 * [Formula Cookbook](http://docs.brew.sh/Formula-Cookbook.html)
-* the Pony ticket discussing this Tap: [ponyc#1732](https://github.com/ponylang/ponyc/issues/1732)
+* a Travis hint [about timeouts](https://docs.travis-ci.com/user/common-build-problems/#My-builds-are-timing-out)
