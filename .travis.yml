@@ -11,23 +11,23 @@ notifications:
 
 before_install:
   # default stuff from homebrew
-  - export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
-  - if [ -f ".git/shallow" ]; then
-      travis_retry git fetch --unshallow;
-    fi
-  - HOMEBREW_REPOSITORY="$(brew --repo)"
-  - sudo chown -R "$USER" "$HOMEBREW_REPOSITORY"
-  - git -C "$HOMEBREW_REPOSITORY" reset --hard origin/master
-  - brew update || brew update
-  - HOMEBREW_TAP_DIR="$(brew --repo "$TRAVIS_REPO_SLUG")"
-  - rm -rf "$HOMEBREW_TAP_DIR"
-  - ln -s "$PWD" "$HOMEBREW_TAP_DIR"
-  - export HOMEBREW_DEVELOPER="1"
-  - ulimit -n 1024
+  #- export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
+  #- if [ -f ".git/shallow" ]; then
+  #    travis_retry git fetch --unshallow;
+  #  fi
+  #- HOMEBREW_REPOSITORY="$(brew --repo)"
+  #- sudo chown -R "$USER" "$HOMEBREW_REPOSITORY"
+  #- git -C "$HOMEBREW_REPOSITORY" reset --hard origin/master
+  #- brew update || brew update
+  #- HOMEBREW_TAP_DIR="$(brew --repo "$TRAVIS_REPO_SLUG")"
+  #- rm -rf "$HOMEBREW_TAP_DIR"
+  #- ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+  #- export HOMEBREW_DEVELOPER="1"
+  #- ulimit -n 1024
 
 script:
   # default call to the test-bot
-  - brew test-bot
+  #- brew test-bot
 
   # now actually build some bottles
   #
