@@ -4,7 +4,13 @@ env: OSX=10.12
 osx_image: xcode8.1
 rvm: system
 
+notifications:
+  email:
+    on_success: never
+    on_faiure: always
+
 before_install:
+  # default stuff from homebrew
   - export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
   - if [ -f ".git/shallow" ]; then
       travis_retry git fetch --unshallow;
@@ -20,9 +26,26 @@ before_install:
   - ulimit -n 1024
 
 script:
+  # default call to the test-bot
   - brew test-bot
 
-notifications:
-  email:
-    on_success: never
-    on_failure: always
+  # now actually build some bottles
+  #
+  # for reference, see:
+  # * https://github.com/staticfloat/julia-buildbot/blob/master/commands/build_bottle.sh
+  # * https://github.com/Malvineous/travis-homebrew-bottle/blob/master/.travis.yml
+  - brew tap "${TRAVIS_REPO_SLUG}"
+  - formulas="libressl pcre2";
+  - for formula in $formulas;
+    do
+      tapped_formula="${TRAVIS_REPO_SLUG}/${formula}";
+      brew unlink "$tapped_formula" &&
+      brew remove --force "$tapped_formula" &&
+      brew install --verbose --build-bottle "$tapped_formula" &&
+      brew bottle --verbose "$tapped_formula";
+    done;
+  - ls -alh
+
+before_deploy:
+  - export RELEASE_FILES=$(find *.bottle.tar.gz)
+  - echo "We can now deploy:\n$RELEASE_FILES"
