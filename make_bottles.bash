@@ -20,21 +20,21 @@ snippet_from_printout() {
   # Given a printout from 'brew bottle', find the section describing a Formula update.
   printout="$1"
 
-  bottle_name="$(name_from_printout "$1")"
+  bottle_name="$(name_from_printout "${printout}")"
 
   start_section="$(grep -n "./${bottle_name}" "${printout}" | sed -e "s/:.*//")"
   length="$(wc -l "${printout}" | sed -e "s/^ *//" -e "s/ .*//")"
   section_length=$((1 + $length - $start_section))
 
-  tail -${section_length}
+  tail -${section_length} "${printout}"
 }
 
 save_formula_snippet() {
-  # Given a printout from 'brew bottle', save the formula change suggested in a .snippet file
+  # Given a printout from 'brew bottle', save the formula change suggested.
   # This has no file type, but is a snippet of Homebrew DSL in Ruby.
   printout="$1"
+  bottle_name="$2"
 
-  bottle_name="$(name_from_printout "${printout}")"
   snippet_name="${bottle_name}.snippet"
 
   echo "Writing Ruby snippet from the 'brew bottle' output to ${snippet_name}..."
@@ -113,7 +113,22 @@ do
     brew install --verbose --build-bottle "$tapped_formula"
     brew bottle --verbose "$tapped_formula" > "printout.txt"
 
+    bottle_name="$(name_from_printout "printout.txt")"
+    echo "The bottle_name is $bottle_name"
+
     echo "Saving the Ruby snippet from brew bottle..."
-    save_formula_snippet "printout.txt"
+    save_formula_snippet "printout.txt" "${bottle_name}"
+
+    echo "Saving the Bintray descriptor file..."
+    write_bintray_descriptor "${formula}" "${bottle_name}"
+
+    echo "Printout tail is..."
+    tail "printout.txt"
+
+    echo "Snippet is..."
+    cat -v "${bottle_name}.snippet"
+
+    echo "Bintray desc. is..."
+    cat -v "${formula}.bintray.json"
   fi
 done
