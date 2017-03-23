@@ -114,7 +114,7 @@ do
     brew bottle --verbose "$tapped_formula" > "printout.txt"
 
     bottle_name="$(name_from_printout "printout.txt")"
-    echo "The bottle_name is $bottle_name"
+    echo "Bottle file name is $bottle_name"
 
     echo "Saving the Ruby snippet from brew bottle..."
     save_formula_snippet "printout.txt" "${bottle_name}"
@@ -123,12 +123,18 @@ do
     write_bintray_descriptor "${formula}" "${bottle_name}"
 
     echo "Printout tail is..."
+    echo "===="
     tail "printout.txt"
+    echo "===="
 
     echo "Snippet is..."
+    echo "===="
     cat -v "${bottle_name}.snippet"
+    echo "===="
 
     echo "Bintray desc. is..."
+    echo "===="
     cat -v "${formula}.bintray.json"
+    echo "===="
   fi
 done
