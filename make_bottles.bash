@@ -57,20 +57,11 @@ JSON="{
     \"name\": \"$COMMIT\"
   },
   \"files\": [{
-    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.tar.gz)\",
+    \"includePattern\": \"\\\\/Users\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*.bottle.*.tar.gz)\",
     \"uploadPattern\": \"\$1\"
   }],
   \"publish\": true
 }"
-
-#  \"version\": {
-#   \"name\": \"Bottles built on $DATE\",
-#   \"desc\": \"Binary packages for use via our Homebrew Tap\",
-#   \"released\": \"$DATE\",
-#   \"vcs_tag\": \"$COMMIT\",
-#   \"gpgSign\": false
-
-#    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.bottle.*\\\\.tar.gz)\",
 
 echo "Writing JSON to file..."
 echo "$JSON" > "./bottles-to-deploy.json"
