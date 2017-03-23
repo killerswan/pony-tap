@@ -57,7 +57,7 @@ JSON="{
     \"name\": \"$COMMIT\"
   },
   \"files\": [{
-    \"includePattern\": \"\\\\/Users\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*.bottle.*.tar.gz)\",
+    \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(.*.bottle.*.tar.gz)\",
     \"uploadPattern\": \"\$1\"
   }],
   \"publish\": true
