@@ -45,7 +45,7 @@ do
 done
 
 echo "Creating a Bintray descriptor file for the bottles to deploy..."
-DATE="$(date +%Y-%m-%d)"
+#DATE="$(date +%Y-%m-%d)"
 COMMIT="$(git rev-parse --verify 'HEAD^{commit}')"
 JSON="{
   \"package\": {
@@ -54,18 +54,23 @@ JSON="{
     \"name\": \"all\"
   },
   \"version\": {
-    \"name\": \"Bottles built on $DATE\",
-    \"desc\": \"Binary packages for use via our Homebrew Tap\",
-    \"released\": \"$DATE\",
-    \"vcs_tag\": \"$COMMIT\",
-    \"gpgSign\": false
+    \"name\": \"$COMMIT\"
   },
   \"files\": [{
-    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.bottle.*\\\\.tar.gz)\",
+    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.tar.gz)\",
     \"uploadPattern\": \"\$1\"
   }],
   \"publish\": true
 }"
+
+#  \"version\": {
+#   \"name\": \"Bottles built on $DATE\",
+#   \"desc\": \"Binary packages for use via our Homebrew Tap\",
+#   \"released\": \"$DATE\",
+#   \"vcs_tag\": \"$COMMIT\",
+#   \"gpgSign\": false
+
+#    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.bottle.*\\\\.tar.gz)\",
 
 echo "Writing JSON to file..."
 echo "$JSON" > "./bottles-to-deploy.json"
