@@ -23,3 +23,6 @@ output/
 _ReSharper.*
 .vscode/
 src/common/dtrace_probes.h
+
+*.bottle*.tar.gz
+bottles-to-deploy.json

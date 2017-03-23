@@ -1,4 +1,10 @@
 language: ruby
+
+branches:
+  only:
+    - master
+    - release
+
 os: osx
 osx_image: xcode8.1
 rvm: system
@@ -6,6 +12,7 @@ env:
   global:
     # default?
     - OSX=10.12"
+    - HOMEBREW_DEVELOPER="1"
 
 
 notifications:
@@ -14,85 +21,24 @@ notifications:
     on_faiure: always
 
 before_install:
-  # default stuff from homebrew
-  - export TRAVIS_COMMIT="$(git rev-parse --verify -q HEAD)"
-  - if [ -f ".git/shallow" ]; then
-      travis_retry git fetch --unshallow;
-    fi
-
-  # update to latest homebrew (no, really latest)
-  - HOMEBREW_REPOSITORY="$(brew --repo)"
-  - sudo chown -R "$USER" "$HOMEBREW_REPOSITORY"
-  - git -C "$HOMEBREW_REPOSITORY" reset --hard origin/master
-  - brew update || brew update
-
-  # link the current directory as a tap named for this
-  - HOMEBREW_TAP_DIR="$(brew --repo "$TRAVIS_REPO_SLUG")"
-  - echo "PWD is $PWD"
-  - echo "HOMEBREW_TAP_DIR is $HOMEBREW_TAP_DIR"
-  - rm -rf "$HOMEBREW_TAP_DIR"
-  - TAP_DIR_DIR="$(dirname "$HOMEBREW_TAP_DIR")"
-  - if [[ ! -d "$TAP_DIR_DIR" ]]; then mkdir "$TAP_DIR_DIR"; fi
-  - ln -s "$PWD" "$HOMEBREW_TAP_DIR"
-
-  # log more verbosely
-  - export HOMEBREW_DEVELOPER="1"
+  - bash self_tap.bash
 
   # attempt to set the maximum number of file descriptors (see bash manpage),
   # seems pointless because this shell doesn't persist... or does it!?
   - ulimit -n 1024
 
 script:
-  # default call to the test-bot
   - brew test-bot
-
-  # confirm our tap is set up
-  - brew update
-  - brew install --verbose jq
-  - brew tap "${TRAVIS_REPO_SLUG}"
-
-  # now actually build some bottles
-  #
-  # for reference, see:
-  # * https://github.com/staticfloat/julia-buildbot/blob/master/commands/build_bottle.sh
-  # * https://github.com/Malvineous/travis-homebrew-bottle/blob/master/.travis.yml
-  #
-  - formulas="pcre2";
-  - for formula in $formulas;
-    do
-      tapped_formula="${TRAVIS_REPO_SLUG}/${formula}";
-      RB="./Formula/${formula}.rb";
-
-      echo "Printing JSON of bottle info...";
-      brew info --json=v1 "$RB";
-      echo "OK";
-
-      EXPECTED_NAME=$(brew info --json=v1 "$RB" | jq '.[0].name');
-      EXPECTED_VERSION=$(brew info --json=v1 "$RB" | jq '.[0].versions.stable');
-      EXPECTED_REVISION=$(brew info --json=v1 "$RB" | jq '.[0].revision');
-      BOTTLE=$(brew info --json=v1 "$RB" | jq '.[0].bottle');
-
-      if [[ "$BOTTLE" == "{}" ]];
-      then
-        echo "Since no bottles for ${formula} are available, building new from source..."
-        brew unlink "$tapped_formula" || echo "Could not unlink.";
-        brew remove --force "$tapped_formula" || echo "Could not remove.";
-        brew install --verbose --build-bottle "$tapped_formula" &&
-        brew bottle --verbose "$tapped_formula";
-      fi;
-    done;
-
-  #TODO: WRITE A BINTRAY DESCRIPTOR FILE FOR THE BOTTLES TO UPLOAD
-  # * override: default, no overwrite
-  # * date
-  # * version
-  # * attributes incl. SHA
-  # * pattern
-
-  # I'm fine sticking everything in one bintray repository, as Julia does.
-
+  - bash make_bottles.bash
   - ls -alh
 
-after_success:
-  - export RELEASE_FILES=$(find . -iname "*.bottle*.tar.gz")
-  - echo "We can now deploy:\n$RELEASE_FILES"
+deploy:
+  - provider: bintray
+    user: FIXME
+    #file: /home/travis/build/ponylang/ponyc/bintray_source.json
+    file: bottles-to-deploy.json
+    on:
+      branch: release
+      condition: "$FIXME == FIXME"
+    key:
+      secure: FIXME
