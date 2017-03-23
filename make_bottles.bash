@@ -9,6 +9,81 @@ brew update
 brew install --verbose jq
 brew tap "${TRAVIS_REPO_SLUG}"
 
+name_from_printout() {
+  # Given a printout from 'brew bottle', find the bottle file name.
+  printout="$1"
+
+  grep -i "==> Bottling" "${printout}" | sed -e "s/^==> Bottling //" -e "s/...$//"
+}
+
+snippet_from_printout() {
+  # Given a printout from 'brew bottle', find the section describing a Formula update.
+  printout="$1"
+
+  bottle_name="$(name_from_printout "$1")"
+
+  start_section="$(grep -n "./${bottle_name}" "${printout}" | sed -e "s/:.*//")"
+  length="$(wc -l "${printout}" | sed -e "s/^ *//" -e "s/ .*//")"
+  section_length=$((1 + $length - $start_section))
+
+  tail -${section_length}
+}
+
+save_formula_snippet() {
+  # Given a printout from 'brew bottle', save the formula change suggested in a .snippet file
+  # This has no file type, but is a snippet of Homebrew DSL in Ruby.
+  printout="$1"
+
+  bottle_name="$(name_from_printout "${printout}")"
+  snippet_name="${bottle_name}.snippet"
+
+  echo "Writing Ruby snippet from the 'brew bottle' output to ${snippet_name}..."
+  echo "$(snippet_from_printout "${printout}")" > "${snippet_name}"
+}
+
+write_bintray_descriptor() {
+  # Given a formula label and a bottle file name,
+  # save out a bintray deployment descriptor JSON file.
+  #
+  # The benefit of doing this per-file is that we can detect duplicate versions.
+  formula_name="$1"
+  bottle_name="$2"
+
+  echo "Creating a Bintray descriptor file for the bottles to deploy..."
+  JSON_NAME="${formula_name}.bintray.json"
+
+  JSON="{
+  \"package\": {
+    \"subject\": \"killerswan\",
+    \"repo\": \"bottles\",
+    \"name\": \"all\"
+  },
+  \"version\": {
+    \"name\": \"${bottle_name}\"
+  },
+  \"publish\": true,
+  \"files\": [
+    {
+      \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(${bottle_name})\",
+      \"uploadPattern\": \"\$1\"
+    },
+    {
+      \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(${bottle_name}.snippet)\",
+      \"uploadPattern\": \"\$1\"
+    }
+  ]
+}"
+
+  # Note wildcard pattern:
+  # { \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(.*.bottle.*.tar.gz)\", \"uploadPattern\": \"\$1\" },
+
+  # Commit:
+  #COMMIT="$(git rev-parse --verify 'HEAD^{commit}')"
+
+  echo "Writing JSON to ${JSON_NAME}..."
+  echo "$JSON" > "${JSON_NAME}"
+}
+
 # now actually build some bottles
 #
 # for reference, see:
@@ -38,33 +113,9 @@ do
 
     echo "Building a new bottle for ${formula}..."
     brew install --verbose --build-bottle "$tapped_formula"
-    brew bottle --verbose "$tapped_formula"
+    brew bottle --verbose "$tapped_formula" > "printout.txt"
 
-    # TODO: collect version attributes incl. SHA for each bottle
+    echo "Saving the Ruby snippet from brew bottle..."
+    save_formula_snippet "printout.txt"
   fi
 done
-
-echo "Creating a Bintray descriptor file for the bottles to deploy..."
-#DATE="$(date +%Y-%m-%d)"
-COMMIT="$(git rev-parse --verify 'HEAD^{commit}')"
-JSON="{
-  \"package\": {
-    \"subject\": \"killerswan\",
-    \"repo\": \"bottles\",
-    \"name\": \"all\"
-  },
-  \"version\": {
-    \"name\": \"$COMMIT\"
-  },
-  \"files\": [{
-    \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(.*.bottle.*.tar.gz)\",
-    \"uploadPattern\": \"\$1\"
-  }],
-  \"publish\": true
-}"
-
-echo "Writing JSON to file..."
-echo "$JSON" > "./bottles-to-deploy.json"
-echo "=== WRITTEN FILE =========================="
-cat -v "./bottles-to-deploy.json"
-echo "==========================================="

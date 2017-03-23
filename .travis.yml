@@ -36,7 +36,7 @@ script:
 deploy:
   - provider: bintray
     user: killerswan
-    file: bottles-to-deploy.json
+    file: "*.bintray.json"
     on:
       branch: master
       #condition: "$FIXME == FIXME"
