@@ -61,7 +61,7 @@ JSON="{
     \"gpgSign\": false
   },
   \"files\": [{
-    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.tar.bz2)\",
+    \"includePattern\": \"\\\\/home\\\\/travis\\\\/build\\\\/killerswan\\\\/homebrew-pony\\\\/(.*\\\\.bottle.*\\\\.tar.gz)\",
     \"uploadPattern\": \"\$1\"
   }],
   \"publish\": true

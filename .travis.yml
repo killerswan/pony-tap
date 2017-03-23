@@ -38,7 +38,7 @@ deploy:
     #file: /home/travis/build/ponylang/ponyc/bintray_source.json
     file: bottles-to-deploy.json
     on:
-      branch: release
-      condition: "$FIXME == FIXME"
+      branch: master
+      #condition: "$FIXME == FIXME"
     key:
       secure: FIXME
