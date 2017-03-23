@@ -90,9 +90,7 @@ write_bintray_descriptor() {
 # * https://github.com/staticfloat/julia-buildbot/blob/master/commands/build_bottle.sh
 # * https://github.com/Malvineous/travis-homebrew-bottle/blob/master/.travis.yml
 
-formulas="pcre2"
-
-for formula in $formulas
+for formula in $FORMULAS
 do
   tapped_formula="${TRAVIS_REPO_SLUG}/${formula}"
   RB="./Formula/${formula}.rb"
