@@ -1,8 +1,7 @@
 #! /bin/bash
 
-set +o errexit
-set +o nounset
-set +o
+set -o errexit
+set -o nounset
 
 # confirm our tap is set up
 brew update

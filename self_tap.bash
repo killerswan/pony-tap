@@ -1,8 +1,7 @@
 #! /bin/bash
 
-set +o errexit
-set +o nounset
-set +o
+set -o errexit
+set -o nounset
 
 # update system homebrew to latest (no, really latest)
 HOMEBREW_REPOSITORY="$(brew --repo)"
