@@ -34,7 +34,7 @@ save_formula_snippet() {
   printout="$1"
   bottle_name="$2"
 
-  snippet_name="${bottle_name}.snippet"
+  snippet_name="${bottle_name}.snippet.txt"
 
   echo "Writing Ruby snippet from the 'brew bottle' output to ${snippet_name}..."
   echo "$(snippet_from_printout "${printout}")" > "${snippet_name}"
@@ -67,7 +67,7 @@ write_bintray_descriptor() {
       \"uploadPattern\": \"\$1\"
     },
     {
-      \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(${bottle_name}.snippet)\",
+      \"includePattern\": \"/Users/travis/build/killerswan/homebrew-pony/(${bottle_name}.snippet.txt)\",
       \"uploadPattern\": \"\$1\"
     }
   ]
@@ -101,8 +101,10 @@ do
 
   BOTTLE=$(brew info --json=v1 "$RB" | jq '.[0].bottle')
 
-  if [[ "$BOTTLE" == "{}" ]]
+  if [[ "$BOTTLE" != "{}" ]]
   then
+    echo "Maybe nothing to do: a bottle was found for ${formula}"
+  else
     echo "No bottles for ${formula} are configured for downloading"
 
     brew unlink "$tapped_formula" || echo "Could not unlink."
@@ -128,7 +130,7 @@ do
 
     echo "Snippet is..."
     echo "===="
-    cat -v "${bottle_name}.snippet"
+    cat -v "${bottle_name}.snippet.txt"
     echo "===="
 
     echo "Bintray desc. is..."
