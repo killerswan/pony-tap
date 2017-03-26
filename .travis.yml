@@ -6,7 +6,10 @@ branches:
     - release
 
 os: osx
-osx_image: xcode8.1
+osx_image: xcode8.1 # sierra
+osx_image: xcode7.3 # el capitan
+osx_image: xcode6.4 # yosemite
+
 rvm: system
 env:
   global:
@@ -21,15 +24,7 @@ notifications:
     on_success: never
     on_faiure: always
 
-before_install:
-  - bash self_tap.bash
-
-  # attempt to set the maximum number of file descriptors (see bash manpage),
-  # seems pointless because this shell doesn't persist... or does it!?
-  - ulimit -n 1024
-
 script:
-  - brew test-bot
   - bash make_bottles.bash
   - pwd
   - ls -alh
