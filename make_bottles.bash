@@ -92,14 +92,14 @@ write_bintray_descriptor() {
 for formula in $FORMULAS
 do
   tapped_formula="${TRAVIS_REPO_SLUG}/${formula}"
-  RB="./Formula/${formula}.rb"
+  local_formula="./Formula/${formula}.rb"
 
   echo "Printing JSON of bottle info..."
   echo "==="
-  brew info --json=v1 "$RB"
+  brew info --json=v1 "$local_formula"
   echo "==="
 
-  BOTTLE=$(brew info --json=v1 "$RB" | jq '.[0].bottle')
+  BOTTLE=$(brew info --json=v1 "$local_formula" | jq '.[0].bottle')
 
   if [[ "$BOTTLE" == "{}" ]]
   then
@@ -109,8 +109,8 @@ do
     brew remove --force "$tapped_formula" || echo "Could not remove."
 
     echo "Building a new bottle for ${formula}..."
-    brew install --verbose --build-bottle "$tapped_formula"
-    brew bottle --verbose "$tapped_formula" > "printout.txt"
+    brew install --verbose --build-bottle "$local_formula"
+    brew bottle --verbose "$local_formula" > "printout.txt"
 
     bottle_name="$(name_from_printout "printout.txt")"
     echo "Bottle file name is $bottle_name"
