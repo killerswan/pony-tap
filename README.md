@@ -6,7 +6,11 @@ To install an item from this repository, for example LLVM 3.8:
 brew install killerswan/pony/llvm@3.8
 ```
 
-Each item available can be found in this repository's `/Formula/` directory.
+Formulas available include:
+* libressl
+* pcre2
+* llvm@3.8
+
 
 
 ## Updates
