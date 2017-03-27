@@ -2,8 +2,8 @@ language: ruby
 
 branches:
   only:
+    - staging
     - master
-    - release
 
 matrix:
   include:
