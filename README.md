@@ -3,7 +3,7 @@
 ## Usage
 To install an item from this repository, for example LLVM 3.8:
 ```bash
-brew install killerswan/pony/llvm@3.8
+brew install killerswan/pony/pcre2
 ```
 
 Formulas available include:
@@ -12,15 +12,26 @@ Formulas available include:
 * llvm@3.8
 
 
+## Formula update process
 
-## Updates
+Here are some checklists to follow when adding or updating a formula, so new binary bottles are created.
 
-Updates to our formulas should also be built into new binary bottles.
+The submitter should:
+```
+- [ ] Make a request containing the version to build, removing old bottle SHAs.
+- [ ] If this is a new formula, update `.travis.yml`, too.
+```
 
-1. To do this, first update the formula in the tap.  (You can comment out the bottle SHAs.)
-1. Then update .travis.yml's expected version (and revision) of the package to start a new bottle build.
-1. Travis will build bottles for various macOS versions and deploy them to Bintray.
-1. Finally you can update the tap to refer to these new bottles' SHAs.
+An admin should:
+```
+- [ ] Confirm that bottles were built OK (though not deployed) by Travis CI.
+- [ ] Review the code.
+- [ ] Merge to _staging_ so bottles are built AND deployed to Bintray.
+- [ ] Make another commit inserting SHAs into the formula.
+- [ ] Merge to master.
+```
+
+This means that for a pull req. the first bottle builds (with unreviewed code) won't be deployed [to Bintray](https://dl.bintray.com/killerswan/bottles).  But `master` will still (due to `staging`) always have up-to-date SHAs.  If master always refers to up-to-date bottles, users will have fast binary installs!
 
 
 ## References
