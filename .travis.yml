@@ -41,6 +41,7 @@ before_install:
 script:
   #- brew test-bot
   - bash make_bottles.bash
+  - ls -lFhtTr
 
 after_success:
   - if [[ -f "libressl.bintray.json" ]]; then export deploy_libressl=yes; fi
