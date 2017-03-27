@@ -1,15 +1,10 @@
 # A Homebrew Tap for Pony and its dependencies
 
 ## Usage
-To install an item from this repository, for example LLVM 3.8:
+To install an item from this repository, for example pcre2:
 ```bash
 brew install killerswan/pony/pcre2
 ```
-
-Formulas available include:
-* libressl
-* pcre2
-* llvm@3.8
 
 
 ## Formula update process

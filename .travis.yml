@@ -12,19 +12,19 @@ matrix:
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="pcre2"
+        - FORMULAS="libressl pcre2"
     - os: osx
       osx_image: xcode7.3
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="pcre2"
+        - FORMULAS="libressl pcre2"
     - os: osx
       osx_image: xcode6.4
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="pcre2"
+        - FORMULAS="libressl pcre2"
 
 notifications:
   email:
