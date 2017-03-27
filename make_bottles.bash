@@ -40,6 +40,22 @@ save_formula_snippet() {
   echo "$(snippet_from_printout "${printout}")" > "${snippet_name}"
 }
 
+fail_if_bintray_has() {
+  # Given a bottle name, check our Bintray for previous uploads with the same name
+  bottle_name="$1"
+
+  url="https://dl.bintray.com/killerswan/bottles/${bottle_name}"
+  code="$(curl --silent --head --output /dev/null --write-out "%{http_code}" --location "${url}")"
+
+  if [[ "$code" == "200" ]]
+  then
+    echo "A bottle with this name is already deployed to Bintray.  Exiting."
+    exit 1
+  else
+    echo "This seems to be a new bottle."
+  fi
+}
+
 write_bintray_descriptor() {
   # Given a formula label and a bottle file name,
   # save out a bintray deployment descriptor JSON file.
@@ -116,6 +132,9 @@ do
 
     bottle_name="$(name_from_printout "printout.txt")"
     echo "Bottle file name is $bottle_name"
+
+    echo "Checking for previous uploads..."
+    fail_if_bintray_has "$bottle_name"
 
     echo "Saving the Ruby snippet from brew bottle..."
     save_formula_snippet "printout.txt" "${bottle_name}"
