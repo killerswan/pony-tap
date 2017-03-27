@@ -12,19 +12,19 @@ matrix:
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="libressl pcre2"
+        - FORMULAS="libressl pcre2 ponyc"
     - os: osx
       osx_image: xcode7.3
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="libressl pcre2"
+        - FORMULAS="libressl pcre2 ponyc"
     - os: osx
       osx_image: xcode6.4
       rvm: system
       env:
         - HOMEBREW_DEVELOPER="1"
-        - FORMULAS="libressl pcre2"
+        - FORMULAS="libressl pcre2 ponyc"
 
 notifications:
   email:
@@ -46,6 +46,7 @@ script:
 after_success:
   - if [[ -f "libressl.bintray.json" ]]; then export deploy_libressl=yes; fi
   - if [[ -f "pcre2.bintray.json" ]]; then export deploy_pcre2=yes; fi
+  - if [[ -f "ponyc.bintray.json" ]]; then export deploy_ponyc=yes; fi
 
 deploy:
   - provider: bintray
@@ -63,5 +64,14 @@ deploy:
     on:
       branch: staging
       condition: "${deploy_pcre2} == yes"
+    key:
+      secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
+
+  - provider: bintray
+    user: killerswan
+    file: "ponyc.bintray.json"
+    on:
+      branch: staging
+      condition: "${deploy_ponyc} == yes"
     key:
       secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
