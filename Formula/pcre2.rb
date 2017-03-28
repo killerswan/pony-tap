@@ -7,6 +7,7 @@ class Pcre2 < Formula
   head "svn://vcs.exim.org/pcre2/code/trunk"
 
   bottle do
+    root_url "https://dl.bintray.com/killerswan/bottles/"
     cellar :any
     rebuild 1
     sha256 "247b5aae4fdbc9139e261c8a39ad7cc14d3de1fc3989ffff7745cba5c1da745c" => :sierra

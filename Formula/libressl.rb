@@ -7,6 +7,7 @@ class Libressl < Formula
   sha256 "d300c4e358aee951af6dfd1684ef0c034758b47171544230f3ccf6ce24fe4347"
 
   bottle do
+    root_url "https://dl.bintray.com/killerswan/bottles/"
     sha256 "b83b8e9fa77a6da7de0f9b514fdf0f78ab8108e6c50fb4223193d2b5ebdcbe11" => :sierra
     sha256 "be7bfa1a55a835647c11c2cfb0408320e7b387925708f151b4d3bfc96a9b17d1" => :el_capitan
     sha256 "12dc7f6495da421b1140c32e07c3104ff63ff6bdfa59188c23cc5b370c795a65" => :yosemite
