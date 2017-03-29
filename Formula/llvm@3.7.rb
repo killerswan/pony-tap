@@ -36,9 +36,9 @@ class LlvmAT37 < Formula
 
   bottle do
     rebuild 1
-    #sha256 "086d8f2aee762f69511d25f704579828428dafb37f308ade14cbb2cec106046e" => :sierra
-    #sha256 "f61418bf5315eb0b346c23b2dbb81f9d62cdb00f173b3b5eee9e25ac96dbe796" => :el_capitan
-    #sha256 "e006a9164903c96932e43c259cbd909f1316f4172a59e2057f28108e5aa87913" => :yosemite
+    sha256 "086d8f2aee762f69511d25f704579828428dafb37f308ade14cbb2cec106046e" => :sierra
+    sha256 "f61418bf5315eb0b346c23b2dbb81f9d62cdb00f173b3b5eee9e25ac96dbe796" => :el_capitan
+    sha256 "e006a9164903c96932e43c259cbd909f1316f4172a59e2057f28108e5aa87913" => :yosemite
   end
 
   head do
@@ -117,6 +117,9 @@ class LlvmAT37 < Formula
       system buildpath/"configure", *args
       system "make", "VERBOSE=1"
       system "make", "VERBOSE=1", "install"
+      cd "tools/clang" do
+        system "make", "install"
+      end
     end
 
     if MacOS.version <= :snow_leopard
