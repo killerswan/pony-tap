@@ -129,6 +129,7 @@ function copy_bottles_from_core() {
   oses="$(echo "$bottles" | jq 'keys')"
 
   # names of bottle files we'll deploy to bintray
+  bottle_files_to_deploy_count=0
   bottle_files_to_deploy=()
 
   for (( ii=0; ii<len_bottles; ii++ ))
@@ -157,6 +158,7 @@ function copy_bottles_from_core() {
       if download_and_check_bottle "$bottle_name" "$core_bottle_url" "$sha256"
       then
         echo "Found the bottle on core (with matching SHA).  Now saving the bottle name for addition to bintray descriptor..."
+        bottle_files_to_deploy_count=$((bottle_files_to_deploy_count + 1))
         bottle_files_to_deploy+=("$bottle_name")
       else
         echo "WARNING!! Could not get the bottle from core!"
@@ -165,7 +167,13 @@ function copy_bottles_from_core() {
     fi
   done
 
-  write_bintray_descriptor "$formula" "$len_bottles" "${bottle_files_to_deploy[@]}"
+  # get ready to deploy what we've downloaded
+  if (( bottle_files_to_deploy_count > 0 ))
+  then
+    write_bintray_descriptor "$formula" "$len_bottles" "${bottle_files_to_deploy[@]}"
+  else
+    echo "For $formula, all bottles have been mirrored: done."
+  fi
 }
 
 for formula in $FORMULAS
