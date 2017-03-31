@@ -11,7 +11,7 @@ PONY_ROOT="https://dl.bintray.com/killerswan/bottles"
 BINTRAY_USER="killerswan"
 BINTRAY_REPO="bottles"
 BINTRAY_PACKAGE="all"
-LOCAL_DIR_PATTERN="/Users/travis/build/killerswan/homebrew-pony"
+LOCAL_DIR_PATTERN="."
 # TODO: try substituting "."
 
 function has_sha256 {
