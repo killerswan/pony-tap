@@ -7,7 +7,9 @@ FORMULAS="$1"
 
 # we want to mirror bottles from core to pony (where core can't deprecate them)
 CORE_ROOT="https://homebrew.bintray.com/bottles"
+echo "FIXME: Echoing CORE_ROOT to satisfy ShellCheck: $CORE_ROOT"
 PONY_ROOT="https://dl.bintray.com/killerswan/bottles"
+
 
 function has_sha256 {
   # Given a SHA256 and a file name, check it.

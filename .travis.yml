@@ -18,6 +18,10 @@ notifications:
 
 install:
   - brew install jq
+  - brew install shellcheck
+
+before_script:
+  - shellcheck *.bash
 
 script:
   - bash mirror_bottles.bash "$FORMULAS_TO_MIRROR"

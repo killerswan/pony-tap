@@ -23,7 +23,7 @@ snippet_from_printout() {
 
   start_section="$(grep -n "./${bottle_name}" "${printout}" | sed -e "s/:.*//")"
   length="$(wc -l "${printout}" | sed -e "s/^ *//" -e "s/ .*//")"
-  section_length=$((1 + $length - $start_section))
+  section_length=$((1 + length - start_section))
 
   tail -${section_length} "${printout}"
 }
@@ -37,7 +37,7 @@ save_formula_snippet() {
   snippet_name="${bottle_name}.snippet.txt"
 
   echo "Writing Ruby snippet from the 'brew bottle' output to ${snippet_name}..."
-  echo "$(snippet_from_printout "${printout}")" > "${snippet_name}"
+  snippet_from_printout "${printout}" > "${snippet_name}"
 }
 
 fail_if_bintray_has() {
