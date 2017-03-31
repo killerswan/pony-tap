@@ -15,7 +15,7 @@ This repository and it's [Travis CI setup](https://travis-ci.org/killerswan/home
 
 The formulas are in the `Formula` subdirectory of this repository.
 
-And the bottles are hosted [here on Bintray](https://bintray.com/killerswan/bottles) ([direct](https://dl.bintray.com/killerswan/bottles/)).
+And the bottles are hosted [here on Bintray](https://bintray.com/killerswan/bottles/all#files) ([direct](https://dl.bintray.com/killerswan/bottles/)).
 
 
 ## Formula update process
@@ -25,7 +25,7 @@ Here are some checklists to follow when adding or updating a formula, so new bin
 The submitter should:
 ```
 - [ ] Make a request containing an updated copy of a formula from homebrew-core.
-- [ ] Modify it's root_url to refer to our bottle mirror.
+- [ ] Modify it's root_url to refer to our bottle mirror: https://dl.bintray.com/killerswan/bottles
 - [ ] Confirm mirroring and usage after merge to master.
 ```
 
@@ -34,4 +34,9 @@ An admin should:
 - [ ] Confirm that bottle SHAs are OK and Bintray descriptor files look good on Travis CI.
 - [ ] Review the code.
 - [ ] Merge to master.
+```
+
+Periodically, an admin should:
+```
+- [ ] Manually remove any binaries Pony no longer needs to keep.
 ```
