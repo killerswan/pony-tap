@@ -11,8 +11,6 @@ PONY_ROOT="https://dl.bintray.com/killerswan/bottles"
 BINTRAY_USER="killerswan"
 BINTRAY_REPO="bottles"
 BINTRAY_PACKAGE="all"
-LOCAL_DIR_PATTERN="."
-# TODO: try substituting "."
 
 function has_sha256 {
   # Given a SHA256 and a file name, check it.
@@ -88,7 +86,7 @@ write_bintray_descriptor() {
     echo "Writing section for file $bottle_file..."
     # the individual file objects...
     file_section="{
-        \"includePattern\": \"$LOCAL_DIR_PATTERN/($bottle_file)\",
+        \"includePattern\": \"./($bottle_file)\",
         \"uploadPattern\": \"\$1\"
       }"
     # note that this does not allow overwriting: we need another property to allow that
