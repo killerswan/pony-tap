@@ -21,6 +21,7 @@ install:
   - brew install shellcheck
 
 before_script:
+  # make sure our script itself is ok
   - shellcheck *.bash
 
 script:
