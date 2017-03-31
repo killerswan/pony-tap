@@ -7,17 +7,16 @@ class Libressl < Formula
   sha256 "d300c4e358aee951af6dfd1684ef0c034758b47171544230f3ccf6ce24fe4347"
 
   bottle do
-    root_url "https://dl.bintray.com/killerswan/bottles/"
-    sha256 "b83b8e9fa77a6da7de0f9b514fdf0f78ab8108e6c50fb4223193d2b5ebdcbe11" => :sierra
-    sha256 "be7bfa1a55a835647c11c2cfb0408320e7b387925708f151b4d3bfc96a9b17d1" => :el_capitan
-    sha256 "12dc7f6495da421b1140c32e07c3104ff63ff6bdfa59188c23cc5b370c795a65" => :yosemite
+    sha256 "c0f9a4fc4f853b8a98288d4c4151b26d0551a76e87d3fb233213618f23727c8d" => :sierra
+    sha256 "6bcd7052d8412883af1d56e2920429d781f38e68df3727bc8eb2bb6bcabc3574" => :el_capitan
+    sha256 "525e5a4b9b742c5b5cb037cc3690ab37d104ac82fc990f7f967a390c27b78c2c" => :yosemite
   end
 
   devel do
-    url "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-2.5.1.tar.gz"
-    mirror "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.5.1.tar.gz"
-    version "2.5.1-beta1"
-    sha256 "f71ae0a824b78fb1a47ffa23c9c26e9d96c5c9b29234eacedce6b4c7740287cd"
+    url "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-2.5.2.tar.gz"
+    mirror "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.5.2.tar.gz"
+    version "2.5.2-beta1"
+    sha256 "0ffa7d70809284a4ac96e965918a61c1d7930bca865457a7db0ff0afc8201c82"
   end
 
   head do

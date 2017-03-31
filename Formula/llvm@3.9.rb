@@ -41,7 +41,7 @@ class LlvmAT39 < Formula
     end
 
     # Only required to build & run Compiler-RT tests on macOS, optional otherwise.
-    # http://clang.llvm.org/get_started.html
+    # https://clang.llvm.org/get_started.html
     resource "libcxx" do
       url "http://llvm.org/releases/3.9.1/libcxx-3.9.1.src.tar.xz"
       sha256 "25e615e428f60e651ed09ffd79e563864e3f4bc69a9e93ee41505c419d1a7461"
@@ -72,13 +72,13 @@ class LlvmAT39 < Formula
       sha256 "9ba5e61fc7bf8c7435f64e2629e0810c9b1d1b03aa5b5605b780d0e177b4cb46"
     end
   end
+
   bottle do
     cellar :any
-    #sha256 "367c8263a2ddb03b01026144cbacbb59a5c89678f0cd6b66a8ca7e54e3a6f09a" => :sierra
-    #sha256 "a71eccd058680a69428d42f0f936879c5fd051664acb2ef614c257116dd3d9e4" => :el_capitan
-    #sha256 "3eb7fd1ce32ce5489c85c209d709b07aed6d720f316cdbe12faca0019ba3b1a7" => :yosemite
+    sha256 "367c8263a2ddb03b01026144cbacbb59a5c89678f0cd6b66a8ca7e54e3a6f09a" => :sierra
+    sha256 "a71eccd058680a69428d42f0f936879c5fd051664acb2ef614c257116dd3d9e4" => :el_capitan
+    sha256 "3eb7fd1ce32ce5489c85c209d709b07aed6d720f316cdbe12faca0019ba3b1a7" => :yosemite
   end
-
 
   head do
     url "http://llvm.org/git/llvm.git", :branch => "release_39"

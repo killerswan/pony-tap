@@ -25,4 +25,4 @@ _ReSharper.*
 src/common/dtrace_probes.h
 
 *.bottle*.tar.gz
-bottles-to-deploy.json
+*.bintray.json
