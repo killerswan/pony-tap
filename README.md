@@ -1,10 +1,21 @@
-# A Homebrew Tap for Pony and its dependencies
+# A Homebrew Tap for Pony and its dependencies [![Build Status](https://travis-ci.org/killerswan/homebrew-pony.svg?branch=master)](https://travis-ci.org/killerswan/homebrew-pony/branches)
 
 ## Usage
-To install an item from this repository, for example pcre2:
+
+To install an item from this homebrew tap, for example pcre2:
 ```bash
 brew install killerswan/pony/pcre2
 ```
+
+## Description
+
+This repository and it's [Travis CI setup](https://travis-ci.org/killerswan/homebrew-pony/branches) provide two things:
+1. a homebrew tap for the Pony project, and
+1. a mirror of bottles for formulas in this tap.
+
+The formulas are in the `Formula` subdirectory of this repository.
+
+And the bottles are hosted [here on Bintray](https://bintray.com/killerswan/bottles) ([direct](https://dl.bintray.com/killerswan/bottles/)).
 
 
 ## Formula update process
@@ -13,30 +24,14 @@ Here are some checklists to follow when adding or updating a formula, so new bin
 
 The submitter should:
 ```
-- [ ] Make a request containing the version to build, removing old bottle SHAs.
-- [ ] If this is a new formula, update `.travis.yml`, too.
+- [ ] Make a request containing an updated copy of a formula from homebrew-core.
+- [ ] Modify it's root_url to refer to our bottle mirror.
+- [ ] Confirm mirroring and usage after merge to master.
 ```
 
 An admin should:
 ```
-- [ ] Confirm that bottles were built OK (though not deployed) by Travis CI.
+- [ ] Confirm that bottle SHAs are OK and Bintray descriptor files look good on Travis CI.
 - [ ] Review the code.
-- [ ] Merge to _staging_ so bottles are built AND deployed to Bintray.
-- [ ] Make another commit inserting SHAs into the formula.
 - [ ] Merge to master.
 ```
-
-This means that for a pull req. the first bottle builds (with unreviewed code) won't be deployed [to Bintray](https://dl.bintray.com/killerswan/bottles).  But `master` will still (due to `staging`) always have up-to-date SHAs.  If master always refers to up-to-date bottles, users will have fast binary installs!
-
-
-## References
-
-Feel free to ask questions!
-
-* the Pony ticket discussing this Tap: [ponyc#1732](https://github.com/ponylang/ponyc/issues/1732)
-* [Bottles](http://docs.brew.sh/Bottles.html)
-* [Taps (third-party repositories)](http://docs.brew.sh/brew-tap.html) (like this one)
-* RubyDoc for [the Formula class](http://www.rubydoc.info/github/Homebrew/brew/master/Formula)
-* [Formula Cookbook](http://docs.brew.sh/Formula-Cookbook.html)
-* a Travis hint [about timeouts](https://docs.travis-ci.com/user/common-build-problems/#My-builds-are-timing-out)
-* [jq](https://stedolan.github.io/jq/)
