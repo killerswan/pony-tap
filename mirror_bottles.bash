@@ -164,7 +164,7 @@ write_bintray_desc() {
 
   total_size_mb="$(du -mc "${bottle_files_to_deploy[@]}" | tail -1 | cut -f 1)"
 
-  # Bintray has a limit of 500 per upload, so check how big our set is.
+  # Bintray has a limit of ??? (I thought 500 MB) per upload, so check how big our set is.
   if (( total_size_mb <= 500 ))
   then
     # If under the limit we can write one bintray descriptor file (easy YAML config).
