@@ -14,7 +14,6 @@ BINTRAY_PACKAGE="all"
 LOCAL_DIR_PATTERN="/Users/travis/build/killerswan/homebrew-pony"
 # TODO: try substituting "."
 
-
 function has_sha256 {
   # Given a SHA256 and a file name, check it.
   #
@@ -83,7 +82,6 @@ write_bintray_descriptor() {
   echo "Writing JSON to ${json_name}..."
   echo "$start" > "$json_name"
 
-  echo "$len_bottles"
   for (( ii=0; ii<len_bottles; ii++ ))
   do
     bottle_file="${bottle_files_to_deploy[$ii]}"
