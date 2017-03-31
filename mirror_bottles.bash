@@ -49,7 +49,53 @@ function download_and_check_bottle() {
   has_sha256 "$sha256" "$local_name"
 }
 
-write_bintray_descriptor() {
+write_bintray_desc_for_one() {
+  # Given a formula label and a single bottle file name,
+  # save out a bintray deployment descriptor JSON file.
+  formula_name="$1"
+  file_to_deploy="$2"
+  suffix="$3"
+
+  echo "Creating a Bintray descriptor file for the bottles to deploy..."
+  json_name="${formula_name}${suffix}.bintray.json"
+
+  commit="$(git rev-parse --verify 'HEAD^{commit}')"
+
+  # everything before the individual file objects...
+  start="{
+    \"package\": {
+      \"subject\": \"$BINTRAY_USER\",
+      \"repo\":    \"$BINTRAY_REPO\",
+      \"name\":    \"$BINTRAY_PACKAGE\"
+    },
+    \"version\": {
+      \"name\": \"${commit}\"
+    },
+    \"publish\": true,
+    \"files\": ["
+
+  # closing braces for everything but the file objects
+  end="]}"
+  
+  # the individual file objects...
+  file_section="{
+    \"includePattern\": \"./($file_to_deploy)\",
+    \"uploadPattern\": \"\$1\"
+  }"
+  # note that this does not allow overwriting: we need another property to allow that
+
+  echo "Writing JSON to ${json_name}..."
+  echo "$start" > "$json_name"
+  echo "$file_section" >> "$json_name"
+  echo "$end" >> "$json_name"
+  echo "Writing done."
+
+  echo "$json_name contains:"
+  # run it through jq to validate the JSON too because who knows what Bintray will do
+  jq '.' "$json_name"
+}
+
+write_bintray_desc_for_set() {
   # Given a formula label and a list of bottle file name,
   # save out a bintray deployment descriptor JSON file.
   formula_name="$1"
@@ -109,6 +155,44 @@ write_bintray_descriptor() {
   jq '.' "$json_name"
 }
 
+write_bintray_desc() {
+  # Given a formula label and a list of bottle file name,
+  # save out a bintray deployment descriptor JSON file.
+  formula_name="$1"
+  len_bottles="$2"
+  bottle_files_to_deploy="$3"
+
+  total_size_mb="$(du -mc "${bottle_files_to_deploy[@]}" | tail -1 | cut -f 1)"
+
+  # Bintray has a limit of 500 per upload, so check how big our set is.
+  if (( total_size_mb <= 500 ))
+  then
+    # If under the limit we can write one bintray descriptor file (easy YAML config).
+    echo "Writing a single bintray desc file."
+    write_bintray_desc_for_set "$formula" "$len_bottles" "${bottle_files_to_deploy[@]}"
+  else
+    # If over the limit (as LLVM 3.9 and 4 are), we may pass with one bintray desc per bottle,
+    # like so, named, e.g. "llvm--1.bintray.json", "llvm--2.bintray.json", etc.
+    #
+    # This will require three (or more) deploy clauses, and have to be checked by hand.
+    echo "WARNING WARNING WARNING WARNING"
+    echo "Writing multiple bintray desc files for $formula_name, over the 500 MB limit."
+    echo "WARNING WARNING WARNING WARNING"
+    for (( jj=0; jj<len_bottles; jj++ ))
+    do
+      file_to_deploy="${bottle_files_to_deploy[jj]}"
+      size_mb="$(du -mc "$file_to_deploy" | tail -1 | cut -f 1)"
+      if (( size_mb <= 500 ))
+      then
+        write_bintray_desc_for_one "$formula_name" "$file_to_deploy" "--$jj"
+      else
+        echo "ERROR!! Cannot upload $file_to_deploy because $file_to_deploy is over 500 MB!!!"
+        return 1
+      fi
+    done
+  fi
+}
+
 function copy_bottles_from_core() {
   formula="$1"
 
@@ -160,7 +244,7 @@ function copy_bottles_from_core() {
         bottle_files_to_deploy_count=$((bottle_files_to_deploy_count + 1))
         bottle_files_to_deploy+=("$bottle_name")
       else
-        echo "WARNING!! Error downloading the bottle from core!"
+        echo "ERROR!! Error downloading the bottle from core!"
         return 1
       fi
     fi
@@ -169,7 +253,7 @@ function copy_bottles_from_core() {
   # get ready to deploy what we've downloaded
   if (( bottle_files_to_deploy_count > 0 ))
   then
-    write_bintray_descriptor "$formula" "$len_bottles" "${bottle_files_to_deploy[@]}"
+    write_bintray_desc "$formula" "$len_bottles" "${bottle_files_to_deploy[@]}"
   else
     echo "For $formula, all bottles have been mirrored: done."
   fi
