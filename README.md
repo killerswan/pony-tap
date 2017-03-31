@@ -35,3 +35,8 @@ An admin should:
 - [ ] Review the code.
 - [ ] Merge to master.
 ```
+
+Periodically, an admin should:
+```
+- [ ] Manually remove any binaries Pony no longer needs to keep.
+```

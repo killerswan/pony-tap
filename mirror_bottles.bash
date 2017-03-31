@@ -148,14 +148,10 @@ function copy_bottles_from_core() {
     # check for mirroring
     if is_bottle_mirrored "$root" "$url"
     then
-      # try downloading the mirror's bottle (to a tempfile) and check its SHA
-      if download_and_check_bottle "$(mktemp)" "$mirrored_bottle_url" "$sha256"
-      then
-        echo "The bottle is already mirrored (with matching SHA)."
-      else
-        echo "WARNING!! The bottle is present on the mirror with a mismatched SHA!!"
-        return 1
-      fi
+      echo "The bottle is already mirrored."
+
+      # if we were to download it and check the signature:
+      #download_and_check_bottle "$(mktemp)" "$mirrored_bottle_url" "$sha256"
     else
       # try downloading the homebrew-core bottle and check its SHA
       if download_and_check_bottle "$bottle_name" "$core_bottle_url" "$sha256"
