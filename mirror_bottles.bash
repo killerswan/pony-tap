@@ -144,7 +144,10 @@ function copy_bottles_from_core() {
     mirrored_bottle_url="${url/$root/$PONY_ROOT}"
     bottle_name="$(basename "$url")"
 
-    echo "Note: now confirming that $bottle_name (with SHA $sha256) is mirrored from $core_bottle_url --> $mirrored_bottle_url, or attempting to do so (via a bintray deployment)."
+    echo "Mirroring $bottle_name"
+    echo "from $core_bottle_url"
+    echo "to $mirrored_bottle_url"
+    echo "with SHA $sha256..."
 
     # check for mirroring
     if is_bottle_mirrored "$root" "$url"
@@ -157,11 +160,11 @@ function copy_bottles_from_core() {
       # try downloading the homebrew-core bottle and check its SHA
       if download_and_check_bottle "$bottle_name" "$core_bottle_url" "$sha256"
       then
-        echo "Found the bottle on core (with matching SHA).  Now saving the bottle name for addition to bintray descriptor..."
+        echo "Downloaded the bottle, now preparing to mirror..."
         bottle_files_to_deploy_count=$((bottle_files_to_deploy_count + 1))
         bottle_files_to_deploy+=("$bottle_name")
       else
-        echo "WARNING!! Could not get the bottle from core!"
+        echo "WARNING!! Error downloading the bottle from core!"
         return 1
       fi
     fi
