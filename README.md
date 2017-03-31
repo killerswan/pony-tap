@@ -1,6 +1,6 @@
-# A Homebrew Tap for Pony and its dependencies [![Build Status](https://travis-ci.org/killerswan/homebrew-pony.svg?branch=master)](https://travis-ci.org/killerswan/homebrew-pony/branches)
+# A Homebrew Tap for Pony and its dependencies
 
-## Usage
+## Usage [![Mirroring status](https://travis-ci.org/killerswan/homebrew-pony.svg?branch=master)](https://travis-ci.org/killerswan/homebrew-pony/branches)
 
 To install an item from this homebrew tap, for example pcre2:
 ```bash
