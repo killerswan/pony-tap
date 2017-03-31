@@ -32,6 +32,7 @@ The submitter should:
 An admin should:
 ```
 - [ ] Confirm that bottle SHAs are OK and Bintray descriptor files look good on Travis CI.
+- [ ] Confirm that there are deploy statements matching those uploads.  (LLVM 3.9 and 4 are large bottles!)
 - [ ] Review the code.
 - [ ] Merge to master.
 ```
