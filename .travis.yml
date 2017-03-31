@@ -9,7 +9,7 @@ matrix:
     - os: osx
       rvm: system
       env:
-        - FORMULAS_TO_MIRROR="libressl pcre2"
+        - FORMULAS_TO_MIRROR="libressl pcre2 llvm@3.7 llvm@3.8 llvm@3.9 llvm"
 
 notifications:
   email:
@@ -30,12 +30,52 @@ script:
 
 after_success:
   - if [[ -f "libressl.bintray.json" ]]; then export mirror_libressl=yes; fi
+  - if [[ -f "llvm@3.7.bintray.json" ]]; then export mirror_llvm37=yes; fi
+  - if [[ -f "llvm@3.8.bintray.json" ]]; then export mirror_llvm38=yes; fi
+  - if [[ -f "llvm@3.9.bintray.json" ]]; then export mirror_llvm39=yes; fi
+  - if [[ -f "llvm.bintray.json" ]]; then export mirror_llvm=yes; fi
   - if [[ -f "pcre2.bintray.json" ]]; then export mirror_pcre2=yes; fi
 
 deploy:
   - provider: bintray
     user: killerswan
     file: "libressl.bintray.json"
+    on:
+      branch: master
+      condition: "${mirror_libressl} == yes"
+    key:
+      secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
+
+  - provider: bintray
+    user: killerswan
+    file: "llvm@3.7.bintray.json"
+    on:
+      branch: master
+      condition: "${mirror_llvm37} == yes"
+    key:
+      secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
+
+  - provider: bintray
+    user: killerswan
+    file: "llvm@3.8.bintray.json"
+    on:
+      branch: master
+      condition: "${mirror_llvm38} == yes"
+    key:
+      secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
+
+  - provider: bintray
+    user: killerswan
+    file: "llvm@3.9.bintray.json"
+    on:
+      branch: master
+      condition: "${mirror_llvm39} == yes"
+    key:
+      secure: "RtPM5AKnfTzLlQ2qGeO1EBwsfsQTB6ordwAXj+vLoXnDznN4C6qb8VWNuQe1A0vp4ZjbqDc5V0C2ZiTnm/VloRMY7CmuI3PrBTdy2QnFS+9rMYXJQwsq2hAynywQvm97F6y3x75OiA4XgWUAvK1Kg0wtwkeKF7m/UOWCJcV+8h8Idtvam3+sNLI/akGcszRLozaQS7bpkvzhp1m8IvFDFCjrM4OdCH4YRpETS2I4UVIWFzVc1gotfiarSePwdrnJ32zCSLWsbjSTNwKh9PXMNeTeR4n6E2Z5AzlB6XXaq7NiT2b8Uk0sKcZgT8EzP40ybGHsW+6xI7qHOMTuz6snYkElzd5K2+cS06R98MCM1CJtvRyPVj/4z8ilMiRGHwVB2hXWDrE1XDgn2Rtdy9a+rDjAnnw82D8ycN4SDeEVn9wh7a+GDgcTX3gZZgaFkC8mRdyYr/pDvmv0b492YjhcwnnxVm9HHonElwNXvOw+f/NSn/kqCC/c9V4eyVu2WZiZVuBemqIWZ1FQm1HFFzAumkO1tiu0Y3mKd1gPryHMawpfjyBUiGA+yUAk6P0LTsTqOyfGb8SdX5uHEyTdXdi28Y9XGkywm0bFUvd7cCkASLfigIxpoMI2LKfUwEOfU9ZfHpj3rHgg3XD4wXTpXi9LNdtUlqcNDeJrS1I83zHF7HE="
+
+  - provider: bintray
+    user: killerswan
+    file: "llvm.bintray.json"
     on:
       branch: master
       condition: "${mirror_libressl} == yes"

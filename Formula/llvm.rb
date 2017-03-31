@@ -74,6 +74,7 @@ class Llvm < Formula
   end
 
   bottle do
+    root_url "https://dl.bintray.com/killerswan/bottles"
     cellar :any
     sha256 "a2aab0ee9bce5c96ac7ed2078ae134ce77ea0f27d41484df2978c7521e63876d" => :sierra
     sha256 "0bccb14a3793ac89e75d6b08804532cec352f23a6422f3f366253f1112d24d22" => :el_capitan
